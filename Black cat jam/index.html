@@ -1,0 +1,890 @@
+<canvas id="canvas"></canvas>
+<script src="/lib/webgl.js"></script>
+<script src="/lib/matrix.js"></script>
+<script src="/lib/shapes.js"></script>
+<script src="/lib/TinyMusic.min.js"></script>
+<div id="text">9 lives - Don't forget to feed the cat!</div>
+<style>
+  /*  */
+  html, body {
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    margin: 0;
+  }
+  /* make the canvas fill its container */
+  #canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  #text {
+    font-size: 30px;
+    font-family: arial;
+    color: #fff;
+    text-shadow: 0 0 2px 2px #000;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+  }
+</style>
+<script>
+
+let // ZzFXMicro - Zuper Zmall Zound Zynth - v1.3.1 by Frank Force ~ 1000 bytes
+zzfxV=.3,               // volume
+zzfxX=new AudioContext, // audio context
+zzfx=                   // play sound
+(p=1,k=.05,b=220,e=0,r=0,t=.1,q=0,D=1,u=0,y=0,v=0,z=0,l=0,E=0,A=0,F=0,c=0,w=1,m=0,B=0
+,N=0)=>{let M=Math,d=2*M.PI,R=44100,G=u*=500*d/R/R,C=b*=(1-k+2*k*M.random(k=[]))*d/R,
+g=0,H=0,a=0,n=1,I=0,J=0,f=0,h=N<0?-1:1,x=d*h*N*2/R,L=M.cos(x),Z=M.sin,K=Z(x)/4,O=1+K,
+X=-2*L/O,Y=(1-K)/O,P=(1+h*L)/2/O,Q=-(h+L)/O,S=P,T=0,U=0,V=0,W=0;e=R*e+9;m*=R;r*=R;t*=
+R;c*=R;y*=500*d/R**3;A*=d/R;v*=d/R;z*=R;l=R*l|0;p*=zzfxV;for(h=e+m+r+t+c|0;a<h;k[a++]
+=f*p)++J%(100*F|0)||(f=q?1<q?2<q?3<q?Z(g**3):M.max(M.min(M.tan(g),1),-1):1-(2*g/d%2+2
+)%2:1-4*M.abs(M.round(g/d)-g/d):Z(g),f=(l?1-B+B*Z(d*a/l):1)*(f<0?-1:1)*M.abs(f)**D*(a
+<e?a/e:a<e+m?1-(a-e)/m*(1-w):a<e+m+r?w:a<h-c?(h-a-c)/t*w:0),f=c?f/2+(c>a?0:(a<h-c?1:(
+h-a)/c)*k[a-c|0]/2/p):f,N?f=W=S*T+Q*(T=U)+P*(U=f)-Y*V-X*(V=W):0),x=(b+=u+=y)*M.cos(A*
+H++),g+=x+x*E*Z(a**5),n&&++n>z&&(b+=v,C+=v,n=0),!l||++I%l||(b=C,u=G,n=n||1);p=zzfxX.
+createBuffer(1,h,R);p.getChannelData(0).set(k);b=zzfxX.createBufferSource();
+b.buffer=p;b.connect(zzfxX.destination);b.start()}
+
+// create the audio context
+var ac = new AudioContext(),
+  // get the current Web Audio timestamp (this is when playback should begin)
+  when = ac.currentTime,
+  // set the tempo
+  tempo = 132,
+  // initialize some vars
+  sequence1,
+  sequence2,
+  sequence3,
+  // create an array of "note strings" that can be passed to a sequence
+  lead = [
+      
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 e',
+    'C3 e',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 q',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 e',
+    'C3 e',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 q', 
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 e',
+    'C3 e',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 q',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 e',
+    'C3 e',
+    'D3 e',
+    'A2 e',
+    'E3 e',
+    'F3 e',
+    'E3 q',
+    '- w',
+    '- w',
+    '- w',
+    '- w',
+    '- w',
+    '- w', 
+     
+  ],
+  harmony = [
+    '- w',
+    '- w',
+    '- w',
+    '- w',
+    '- w',
+    '- w',
+    'A2 e',
+    'F2 e',
+    'G#2 e',
+    'E2 e',
+    'A2 e',
+    'F2 e',
+    'G#2 e',
+    'E2 e',
+    'D2 h',
+    'D2 e',
+    'A2 e',
+    'F2 e',
+    'G#2 e',
+    'E2 e',
+    'G2 e',
+    'D#2 h',
+    '- q',
+    'D2 e',
+    'E2 e',
+    'F2 e',
+    'A2 e',
+    'G#2 e',
+    'E2 e',
+    'G2 h',
+    '- q',
+    'D3 e',
+    'C#3 e',
+    'C3 e',
+    'G#2 e',
+    'B2 s',
+    'C3 s',
+    'B2 s',
+    'C3 s',
+    'B2 s',
+    'C3 s',
+    'B2 s',
+    'C3 s',
+    'B2 h',
+  ],
+  bass = [  
+    'D2 w',
+    '- h',
+    'G#2 w',
+    '- h',
+    'G2 w',
+    '- h',
+    'B2 w',
+    '- h'   
+  ];
+
+// create 3 new sequences (one for lead, one for harmony, one for bass)
+sequence1 = new TinyMusic.Sequence( ac, tempo, lead );
+sequence2 = new TinyMusic.Sequence( ac, tempo, harmony );
+sequence3 = new TinyMusic.Sequence( ac, tempo, bass );
+
+// set staccato and smoothing values for maximum coolness
+sequence1.staccato = 0.5;
+sequence1.waveType = 'triangle';
+sequence2.staccato = 0.5;
+//sequence2.waveType = 'sine';
+//sequence3.staccato = 0;
+//sequence3.smoothing = 0;
+sequence3.waveType = 'triangle';
+
+// adjust the levels so the bass and harmony aren't too loud
+sequence1.gain.gain.value = 1.0;
+sequence2.gain.gain.value = 0.5;
+sequence3.gain.gain.value = 1.0;
+
+// apply EQ settings
+sequence1.mid.frequency.value = 800;
+sequence1.mid.gain.value = 3;
+sequence2.mid.frequency.value = 1200;
+sequence3.mid.gain.value = 3;
+sequence3.bass.gain.value = 6;
+sequence3.bass.frequency.value = 80;
+sequence3.mid.gain.value = -6;
+sequence3.mid.frequency.value = 500;
+sequence3.treble.gain.value = -2;
+sequence3.treble.frequency.value = 1400;
+
+
+//start the lead part immediately
+sequence1.play( when );
+// delay the harmony by 16 beats
+sequence2.play( when );
+// start the bass part immediately
+sequence3.play( when );
+
+// WebGL canvas context
+var gl = canvas.getContext('webgl');
+
+// Vertex shader
+var vshader = `
+attribute vec4 position; 
+attribute vec4 color;
+attribute vec4 normal;
+uniform mat4 mvp;
+uniform mat4 model;            // model matrix
+uniform mat4 inverseTranspose; // inversed transposed model matrix
+varying vec4 v_color;
+varying vec3 v_normal;
+varying vec3 v_position;
+void main() {
+
+  // Apply the model matrix and the camera matrix to the vertex position
+  gl_Position = mvp * position;
+  
+  // Set varying position for the fragment shader
+  v_position = vec3(model * position);
+  
+  // Recompute the face normal
+  v_normal = normalize(vec3(inverseTranspose * normal));
+  
+  // Set the color
+  v_color = color;
+}`;
+
+// Fragment shader
+var fshader = `
+precision mediump float;
+uniform vec3 lightColor;
+uniform vec3 lightPosition;
+uniform vec3 ambientLight;
+varying vec3 v_normal;
+varying vec3 v_position;
+varying vec4 v_color;
+void main() {
+
+  // Compute direction between the light and the current point
+  vec3 lightDirection = normalize(lightPosition - v_position);
+  
+  // Compute angle between the normal and that direction
+  float nDotL = max(dot(lightDirection, v_normal), 0.0);
+  
+  // Compute diffuse light proportional to this angle
+  vec3 diffuse = lightColor * v_color.rgb * nDotL;
+  
+  // Compute ambient light
+  vec3 ambient = ambientLight * v_color.rgb;
+  
+  // Compute total light (diffuse + ambient)
+  gl_FragColor = vec4(diffuse + ambient, 1.0);
+}`;
+
+// Compile program
+var program = compile(gl, vshader, fshader);
+
+// Initialize a cube
+var vertices, normals, indices;
+[vertices, normals, indices] = cube();
+
+// Count vertices
+var n = indices.length;
+
+// Set position, normal buffers
+buffer(gl, vertices, program, 'position', 3, gl.FLOAT);
+buffer(gl, normals, program, 'normal', 3, gl.FLOAT);
+
+// Set indices
+var indexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+// Set the clear color and enable the depth test
+gl.clearColor(0, 0, 0, 1);
+gl.enable(gl.DEPTH_TEST);
+
+// Set the camera
+var cameraMatrix = perspective({fov: 30, aspect: 1, near: 1, far: 100});
+//var cameraMatrix = lookAt();
+cameraMatrix.translateSelf(0, -2, -12);
+
+// Set the point light color and position
+var lightColor = gl.getUniformLocation(program, 'lightColor');
+gl.uniform3f(lightColor, 0, 0, 1);
+
+var lightPosition = gl.getUniformLocation(program, 'lightPosition');
+gl.uniform3f(lightPosition, 0, 10, 0);
+
+// Set the ambient light color
+var ambientLight = gl.getUniformLocation(program, 'ambientLight');
+gl.uniform3f(ambientLight, 0.3, 0.3, 0.3);
+
+// Keys states (false: key is released / true: key is pressed)
+up = right = down = left = jump = false;
+
+// Keydown listener
+onkeydown = (e) => {
+
+  // Up (up / W / Z)
+  if(e.keyCode == 38 || e.keyCode == 90 || e.keyCode == 87){
+    up = true;
+  }
+  
+  // Right (right / D)
+  if(e.keyCode == 39 || e.keyCode == 68){
+    right = true;
+  }
+  
+  // Down (down / S)
+  if(e.keyCode == 40 || e.keyCode == 83){
+    down = true;
+  }
+  
+  // Left (left / A / Q)
+  if(e.keyCode == 37 || e.keyCode == 65 ||e.keyCode == 81){
+    left = true;
+  }
+
+  // Jump (space)
+  if(e.keyCode == 32){
+    jump = true;
+  }
+
+  // Restart
+  if(e.keyCode==82){
+    location.reload();
+  }
+}
+
+// Keyup listener
+onkeyup = (e) => {
+    
+  // Up
+  if(e.keyCode == 38 || e.keyCode == 90 || e.keyCode == 87){
+    up = false;
+  }
+  
+  // Right
+  if(e.keyCode == 39 || e.keyCode == 68){
+    right = false;
+  }
+  
+  // Down
+  if(e.keyCode == 40 || e.keyCode == 83){
+    down = false;
+  }
+  
+  // Left
+  if(e.keyCode == 37 || e.keyCode == 65 || e.keyCode == 81){
+    left = false;
+  }
+  // Jump (space)
+  if(e.keyCode == 32){
+    jump = false;
+  }
+}
+
+
+// Render a cube
+renderCube = (cx, cy, cz, tx, ty, tz, sx, sy, sz) => {
+  // Set cube color
+  var color = gl.getAttribLocation(program, 'color');
+  gl.vertexAttrib3f(color, cx, cy, cz);
+
+  // Set the model matrix
+  var modelMatrix = new DOMMatrix();
+  modelMatrix.translateSelf(tx, ty, tz).scaleSelf(sx, sy, sz)
+  var model = gl.getUniformLocation(program, 'model');
+  gl.uniformMatrix4fv(model, false, modelMatrix.toFloat32Array());
+
+  // Set the cube's mvp matrix (camera x model)
+  var mvpMatrix = (new DOMMatrix(modelMatrix)).preMultiplySelf(cameraMatrix);
+  var mvp = gl.getUniformLocation(program, 'mvp');
+  gl.uniformMatrix4fv(mvp, false, mvpMatrix.toFloat32Array());
+
+  // Set the inverse transpose of the model matrix
+  var inverseTransposeMatrix = transpose((new DOMMatrix(modelMatrix)).invertSelf());
+  var inverseTranspose = gl.getUniformLocation(program, 'inverseTranspose');
+  gl.uniformMatrix4fv(inverseTranspose, false, inverseTransposeMatrix.toFloat32Array());
+
+  // Render
+  gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_SHORT, 0);
+}
+
+renderObj = (px,py,pz,m1,m2,q) => {
+  for (i=0;i<q.length;i++){
+    renderCube(q[i][0],q[i][1],q[i][2],px+q[i][3]*m1+q[i][5]*m2,py+q[i][4],pz+q[i][5]*m1+q[i][3]*m2,q[i][6]*m1+q[i][8]*m2,q[i][7],q[i][8]*m1+q[i][6]*m2);
+  }
+} 
+
+clamp = (x,a,b) => {
+  return Math.max( a, Math.min(x, b) )
+}
+
+chair = (px,py,pz,m1,m2) => {
+  return [
+    [0.75,0.75,0.75,px              ,py+1  ,pz              ,1  ,0.1,1  ],
+    [0.75,0.75,0.75,px-0.9*m1-0.9*m2,py+1  ,pz-0.9*m1-0.9*m2,0.1,1  ,0.1],
+    [0.75,0.75,0.75,px+0.9*m1-0.9*m2,py+1  ,pz-0.9*m1+0.9*m2,0.1,1  ,0.1],
+    [0.75,0.75,0.75,px-0.9*m1+0.9*m2,py+0.5,pz+0.9*m1-0.9*m2,0.1,0.5,0.1],
+    [0.75,0.75,0.75,px+0.9*m1+0.9*m2,py+0.5,pz+0.9*m1+0.9*m2,0.1,0.5,0.1],
+    [0.75,0.75,0.75,px       -0.9*m2,py+1.8,pz-0.9*m1       ,Math.abs(m1)+0.1*Math.abs(m2),0.2,0.1*Math.abs(m1)+Math.abs(m2)]
+  ];
+};
+
+table = (px,py,pz) => {
+  return [
+    [0.75,0.75,0.75,px,    py+1.5 ,pz,1,0.1,1],
+    [0.75,0.75,0.75,px-0.9,py+0.75,pz-0.9,0.1,0.75,0.1],
+    [0.75,0.75,0.75,px+0.9,py+0.75,pz-0.9,0.1,0.75,0.1],
+    [0.75,0.75,0.75,px-0.9,py+0.75,pz+0.9,0.1,0.75,0.1],
+    [0.75,0.75,0.75,px+0.9,py+0.75,pz+0.9,0.1,0.75,0.1]
+  ];
+};
+
+stair = (px,py,pz,m1,m2,sx,sz,h1,h2,n) => {
+  q=[];
+  for(i=0;i<n;i++){
+    q.push([1,1,1,px+0.4*i*m1,py+i*h1,pz+0.4*i*m2,sx,0.2+i*h2,sz]);
+  }
+  return q;
+};
+
+cat = () => {
+  return [
+    [0,0,0,0,-0.5,0,0.4,0.5,0.4], // body
+    [0,0,0,-0.2,0.1,0,0.1,0.1,0.1], // left ear
+    [0,0,0,0.2,0.1,0,0.1,0.1,0.1], // right ear
+    [1,0,0,-0.2,-0.1,0.4,0.1,0.1,0.05], // left eye
+    [1,0,0,0.2,-0.1,0.4,0.1,0.1,0.05], // right eye
+    [0,0,0,0.5,-0.9,0,0.1,0.1,0.1], // tail base
+    [0,0,0,0.6,-0.6,0,0.1,0.4,0.1] // tail tip
+  ];
+};
+
+man = (d) => {
+  return [
+    [0,0,1,0,-0.2,0,0.6,0.2,0.3], // belly
+    [1,0.7,0.5,0,0.7,0,0.4,0.3,0.4], // head
+    [1,1,0,0,0.2,0,0.4,0.2,0.4], // torso
+    [1,0.7,0.5,0,0.6,0.4,0.2,0.2,0.2], // nose
+    [0,0,1,-0.3,-0.6,-0.1*d,0.3,0.2,0.3], // left leg
+    [0,0,1,0.3,-0.6,0.1*d,0.3,0.2,0.3], // right leg
+    [0,0,0,-0.4,-0.9,-0.2*d,0.3,0.1,0.3], // left shoe
+    [0,0,0,0.4,-0.9,0.2*d,0.3,0.1,0.3],  // right shoe
+    [0,0,1,-0.5,0.2,0,0.1,0.2,0.3], // left brace
+    [0,0,1,0.5,0.2,0,0.1,0.2,0.3], // right brace
+    [1,1,0,-0.8,0.2,0.1*d,0.2,0.2,0.2], // left arm
+    [1,1,0,0.8,0.2,-0.1*d,0.2,0.2,0.2], // right arm
+    [1,0.7,0.5,-0.8,-0.2,0.2*d,0.2,0.2,0.2], // left hand
+    [1,0.7,0.5,0.8,-0.2,-0.2*d,0.2,0.2,0.2], // right hand
+    [0,0,0,-0.3,0.7,0.4,0.1,0.1,0.05], // left eye
+    [0,0,0,0.3,0.7,0.4,0.1,0.1,0.05] // right eye
+  ];
+};
+
+palm = (px,py,pz) =>{
+  return [
+    [0.5,0.2,0.1,px,py+2,pz,0.1,2,0], // trunk
+    [0.1,0.6,0.1,px+0.1,py+4.1,pz,0.2,0.1,0.1], // right leaf
+    [0.1,0.6,0.1,px+0.5,py+4.2,pz,0.2,0.1,0.1],
+    [0.1,0.6,0.1,px+0.9,py+4.1,pz,0.2,0.1,0.1],
+    [0.1,0.6,0.1,px+1.2,py+4,pz,0.1,0.1,0.1],
+    [0.1,0.6,0.1,px-0.1,py+4.1,pz,0.2,0.1,0.1], // left leaf
+    [0.1,0.6,0.1,px-0.5,py+4.2,pz,0.2,0.1,0.1],
+    [0.1,0.6,0.1,px-0.9,py+4.1,pz,0.2,0.1,0.1],
+    [0.1,0.6,0.1,px-1.2,py+4,pz,0.1,0.1,0.1],
+    [0.1,0.6,0.1,px,py+4.1,pz+0.1,0.1,0.1,0.2], // down leaf
+    [0.1,0.6,0.1,px,py+4.2,pz+0.5,0.1,0.1,0.2],
+    [0.1,0.6,0.1,px,py+4.1,pz+0.9,0.1,0.1,0.2],
+    [0.1,0.6,0.1,px,py+4,pz+1.2,0.1,0.1,0.1],
+    [0.1,0.6,0.1,px,py+4.1,pz-0.1,0.1,0.1,0.2], // up leaf
+    [0.1,0.6,0.1,px,py+4.2,pz-0.5,0.1,0.1,0.2],
+    [0.1,0.6,0.1,px,py+4.1,pz-0.9,0.1,0.1,0.2],
+    [0.1,0.6,0.1,px,py+4,pz-1.2,0.1,0.1,0.1],
+  ];
+};
+
+pool = (px,py,pz) => {
+  return [
+    [0.2,0.4,0.8,px,py+0.1,pz,2,0.1,2], // water
+    [1,1,1,px+2,py+0.2,pz,0.1,0.2,2.1], // side
+    [1,1,1,px-2,py+0.2,pz,0.1,0.2,2.1], // side
+    [1,1,1,px,py+0.2,pz+2,2.1,0.2,0.1], // side
+    [1,1,1,px,py+0.2,pz-2,2.1,0.2,0.1] // side
+  ];
+};
+
+block = (ax,ay,az,axn,ayn,azn,asx,asy,asz) => {
+  // draw blocks and do blocking 
+  bx=by=bz=false;
+  for (i=0;i<m.length;i++){
+    renderCube(m[i][0],m[i][1],m[i][2],m[i][3],m[i][4],m[i][5],m[i][6],m[i][7],m[i][8]);
+    // collissions
+    if (axn+asx>m[i][3]-m[i][6] && axn-asx<m[i][3]+m[i][6] && ay+asy>m[i][4]-m[i][7] && ay-asy<m[i][4]+m[i][7] && az+asz>m[i][5]-m[i][8] && az-asz<m[i][5]+m[i][8]){
+      bx=true;
+    }
+
+    if (ax+asx>m[i][3]-m[i][6] && ax-asx<m[i][3]+m[i][6] && ayn+asy>m[i][4]-m[i][7] && ayn-asy<m[i][4]+m[i][7] && az+asz>m[i][5]-m[i][8] && az-asz<m[i][5]+m[i][8]){
+      by=true;
+    }
+
+    if (ax+asx>m[i][3]-m[i][6] && ax-asx<m[i][3]+m[i][6] && ay+asy>m[i][4]-m[i][7] && ay-asy<m[i][4]+m[i][7] && azn+asz>m[i][5]-m[i][8] && azn-asz<m[i][5]+m[i][8]){
+      bz=true;
+    }
+  }
+  return [bx,by,bz];
+}
+
+findBlock = (ax,ay,az,asx,asy,asz) => {
+  // find if a is blocked by m 
+  bl=false;
+  for (i=0;i<m.length;i++){
+    // collissions
+    if (ax+asx>m[i][3]-m[i][6] && ax-asx<m[i][3]+m[i][6] && ay+asy>m[i][4]-m[i][7] && ay-asy<m[i][4]+m[i][7] && az+asz>m[i][5]-m[i][8] && az-asz<m[i][5]+m[i][8]){
+      bl=true;
+    }
+  }
+  return bl;
+}
+
+resizeCanvasToDisplaySize = (canvas) => {
+  // Lookup the size the browser is displaying the canvas in CSS pixels.
+  const displayWidth  = canvas.clientWidth;
+  const displayHeight = canvas.clientHeight;
+  
+  // Check if the canvas is not the same size.
+  const needResize = canvas.width  !== displayWidth ||
+                      canvas.height !== displayHeight;
+  
+  if (needResize) {
+    // Make the canvas the same size
+    canvas.width  = displayWidth;
+    canvas.height = displayHeight;
+  }
+  
+  return needResize;
+}
+
+// scene
+m=[];
+d=[[1,0],[-1,0],[0,1],[0,-1]];
+v=[[1,1],[1,-1],[-1,1],[-1,-1]];
+r=0.2; // stair step height
+g=4; // floor size
+a=0; // x-coord
+b=-1-r; // y-coord
+c=0; // z-coord
+u=[]; // unavailable directions
+w=Math.floor(Math.random()*g)+g; // floor width
+h=Math.floor(Math.random()*g)+g; // floor depth
+f=[]; // floors
+f.push([a,b,c,w,h]); // push first floor
+m.push([0.5,0.5,0.5,a,b,c,w,r,h]); // add start floor to m
+for (l=0;l<40;l++){
+  e=Math.floor(Math.random()*f.length);
+  a=f[e][0];
+  b=f[e][1];
+  c=f[e][2];
+  w=f[e][3];
+  h=f[e][4];
+  for (p=0;p<4;p++){
+    d1=d[p][0];
+    d2=d[p][1];
+    if (findBlock(a+(w+2*g)*d1,b,c+(h+2*g)*d2,2*g,g,2*g)){
+      u[p]=true;
+    } else {
+      u[p]=false;
+    }
+  }
+  j=Math.floor(Math.random()*4); // direction
+  if (!u[j]){
+    i=Math.floor(Math.random()*2)+2; // stair height
+    k=Math.round(Math.random())*2-1; // stairs going up or down
+    d1=d[j][0];
+    d2=d[j][1];
+    a=a+w*d1;
+    b=b+2*r*k;
+    c=c+h*d2;
+    if (Math.abs(d1)==1){
+      s1=0.4;
+      s2=1;
+    } else {
+      s1=1;
+      s2=0.4;
+    }
+    m=m.concat(stair(a,b,c,d1,d2,s1,s2,0.4*k,0,i));
+    w=Math.floor(Math.random()*g)+g; // floor width
+    h=Math.floor(Math.random()*g)+g; // floor height
+    q=r*(i+2);
+    a=a+(w+q)*d1;
+    b=b+q*k;
+    c=c+(h+q)*d2;
+    m.push([0.5,0.5,0.5,a,b,c,w,r,h]); // add floor to m
+    f.push([a,b,c,w,h]); // add floor to f
+    for (p=0;p<4;p++){
+      e=Math.floor(Math.random()*5);
+      v1=v[p][0]*(Math.random()+2);
+      v2=v[p][1]*(Math.random()+2);
+      switch(e){
+        case 0:
+          m=m.concat(palm(a+v1,b+0.1,c+v2)); // add palm
+          break;
+        case 2:
+          q=Math.floor(Math.random()*4); // random chair direction
+          m=m.concat(chair(a+v1,b+0.1,c+v2,d[q][0],d[q][1])); // add chair
+          break;
+        case 3:
+          m=m.concat(table(a+v1,b+0.1,c+v2)); // add table
+          break;
+        case 4:
+          m=m.concat(pool(a+v1,b+0.1,c+v2)); // add pool
+      }
+    }
+  }
+}
+
+// Game vars
+acc=0.01; // player acceleration
+jumpV=0.2; // player jump velocity
+gravAcc=0.01; // gravity acceleration
+maxV=0.1; // player max velocity
+minV=0.01; // player min velocity
+fric=0.9; // friction
+vx=vy=vz=x=z=y=xn=yn=zn=0; // player velocity and position
+eAcc=0.005; // cat acceleration
+eMaxV=0.05; // cat max velocity
+evx=evy=evz=0; // cat velocity
+esx=a; // store cat start position
+esy=b+1;
+esz=c;
+ex=exn=esx; // cat position
+ey=eyn=esy;
+ez=ezn=esz;
+es=0.5; // cat size
+o=0; // cat timer
+et=0; // cat next event time
+ed=100; // max frames between cat events
+ea=0; // cat action
+s=1; // player size
+camX=camY=camZ=0; // camera position
+camW=2; // camera const
+onGround=true;
+eOnGround=true;
+t=0;
+animRate=3;
+catLives=9;
+lowLim=-10;
+gameOver=false;
+
+// Update camera angle and re-render triangles every 16ms
+setInterval(() => {
+
+  resizeCanvasToDisplaySize(gl.canvas);
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+  camVx=camVy=camVz=0; // camera translate speed
+
+  // player control
+  if (up){
+    vz=vz-acc;
+  }
+
+  if (down){
+    vz=vz+acc;
+  }
+
+  if (right){
+    vx=vx+acc;
+  }
+
+  if (left){
+    vx=vx-acc;
+  }
+
+  if (jump && onGround){
+    vy=jumpV;
+    onGround=false;
+    zzfx(...[,,410,.04,.05,.07,1,1.8,,96,,,,.1,,,,.89,.05]); // Jump 1197
+  }
+
+  // restart if player falls down
+  if (y<lowLim){
+    location.reload(); 
+  }
+
+  // Game over if the player rescues the cat
+  if (!gameOver && x+s>ex-es && x-s<ex+es && y+s>ey-es && y-s<ey+es && z+s>ez-es && z-s<ez+es){
+    gameOver=true;
+    document.getElementById("text").style.color = "red";
+    document.getElementById("text").innerHTML = "&#10084 Good job &#10084 - Press R to play again";
+    zzfx(...[1.2,,329,.07,.29,.34,1,1.1,,,141,.11,.06,,,.1,.09,.95,.21]); // Powerup 1317
+  }
+
+  // cat control
+  o++;
+  if (o>=et){
+    et=et+ed*Math.random();
+    ea=Math.floor(Math.random()*6); // update cat action  
+  }
+  switch(ea){
+    case 0: 
+      evx=evx+eAcc;
+      break;
+    case 1: 
+      evx=evx-eAcc;
+      break;
+    case 2: 
+      evz=evz+eAcc;
+      break;
+    case 3: 
+      evz=evz-eAcc;
+      break;
+    case 4: 
+      if (eOnGround){
+        evy=jumpV;
+        eOnGround=false;
+      }
+      break;
+  }
+
+  // reset cat if below y=-10
+  if (ey<lowLim){
+    evx=evy=evz=0; // cat velocity
+    ex=exn=esx; // cat position
+    ey=eyn=esy;
+    ez=ezn=esz;
+    if (!gameOver){
+      catLives--;
+      document.getElementById("text").innerHTML = catLives + " lives";
+    }
+    zzfx(...[1.9,,810,.36,,.15,1,5,,,-69,.12,.04,,,,.24,.55,.28,.17]); // Random 1313
+    if (catLives<=0){
+      location.reload();
+    }
+  }
+
+
+  // update player new position
+  vx=vx*fric;
+  vy=vy-gravAcc;
+  vz=vz*fric;
+  vx=clamp(vx,-maxV,maxV);
+  vy=clamp(vy,-jumpV,jumpV);
+  vz=clamp(vz,-maxV,maxV);
+  xn=x+vx;
+  yn=y+vy;
+  zn=z+vz; 
+
+  // update cat new position
+  evx=evx*fric;
+  evy=evy-gravAcc;
+  evz=evz*fric;
+  evx=clamp(evx,-eMaxV,eMaxV);
+  evy=clamp(evy,-jumpV,jumpV);
+  evz=clamp(evz,-eMaxV,eMaxV);
+  exn=ex+evx;
+  eyn=ey+evy;
+  ezn=ez+evz; 
+
+  // Clear
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  // player blocking
+  [bx,by,bz]=block(x,y,z,xn,yn,zn,s,s,s);
+
+  // camera and player update
+  tx=ty=tz=0;
+
+  //  player x dir
+  if (!bx){
+    x=xn;
+    if (x>camX+camW || x<camX-camW){
+      tx=vx;
+    }
+  } else {
+    xn=x;
+    vx=0;
+  }
+
+  // player y dir
+  if (!by){
+    y=yn;
+    if (y>camY+camW || y<camY-camW){
+      ty=vy;
+    }
+  } else {
+    yn=y;
+    if (vy<0){
+      onGround=true;
+    }
+    vy=0;
+  }
+
+  // player z dir
+  if (!bz){
+    z=zn;
+    if (z>camZ+camW || z<camZ-camW){
+      tz=vz;
+    }
+  } else {
+    zn=z;
+    vz=0;
+  }
+
+  // Move camera
+  cameraMatrix.translateSelf(-tx,-ty,-tz);
+  camX=camX+tx;
+  camY=camY+ty;
+  camZ=camZ+tz;
+
+  // cat blocking
+  [bx,by,bz]=block(ex,ey,ez,exn,eyn,ezn,es,es,es);
+
+  // cat x dir
+  if (!bx){
+    ex=exn;
+  } else {
+    exn=ex;
+    evx=0;
+  }
+
+  // cat y dir
+  if (!by){
+    ey=eyn;
+  } else {
+    eyn=ey;
+    if (evy<0){
+      eOnGround=true;
+    }
+    evy=0;
+  }
+
+  // cat z dir
+  if (!bz){
+    ez=ezn;
+  } else {
+    ezn=ez;
+    evz=0;
+  }
+
+  // Player
+  if (Math.abs(vx)>Math.abs(vz)){
+    if (vx>0){
+      d1=0; d2=1;
+    } else {
+      d1=0; d2=-1;
+    }
+  } else {
+    if (vz>0){
+      d1=1; d2=0;
+    } else {
+      d1=-1; d2=0;
+    }
+  }
+  // player animation
+  t=t+Math.max(Math.abs(vx),Math.abs(vz));
+  renderObj(x,y,z,d1,d2,man(Math.sin(t*animRate)));
+
+  // Cat - get general motion direction and draw
+  if (Math.abs(evx)>Math.abs(evz)){
+    if (evx>0){
+      d1=0; d2=1;
+    } else {
+      d1=0; d2=-1;
+    }
+  } else {
+    if (evz>0){
+      d1=1; d2=0;
+    } else {
+      d1=-1; d2=0;
+    }
+  }
+  renderObj(ex,ey+0.5,ez,d1,d2,cat());
+}, 16);
+
+
+</script>
